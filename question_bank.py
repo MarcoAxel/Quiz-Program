@@ -1,12 +1,13 @@
 
-def load_bank_from_file(num_question):
+def load_bank_from_file():
     '''
-    When given a number of questions loads that many questions dictonary returning it 
+    Loads questions from file into a dictonary and returns the dictonary 
     '''
     dict = {}
     file = open('/Users/senrabel/Documents/Classes/Python Programming/Final Project/Question bank/bank.txt','r')
-    for i in range (num_question):
-        question_raw = file.readline().split(':')
+    question_list = file.readlines()
+    for i in question_list:
+        question_raw = i.split(':')
         q = question_raw[0]
         ans = question_raw[1]
         a = ans.split(',')
@@ -25,6 +26,7 @@ def write_bank_to_file(dict):
         for i in val:
             s += i + ","
         file.write(f'{key}:{s}\n')
+
 def add_to_bank(dict):
     '''
     Adds new items into the dictonary that stores the question bank DOES NOT write 
@@ -46,5 +48,3 @@ def print_bank(dict):
     '''
     for key, val in dict.items():
         print(f'{key}:{val}')
-
-
