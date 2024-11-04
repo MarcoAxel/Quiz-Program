@@ -48,3 +48,4 @@ def print_bank(dict):
     '''
     for key, val in dict.items():
         print(f'{key}:{val}')
+        
