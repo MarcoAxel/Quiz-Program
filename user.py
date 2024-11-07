@@ -9,6 +9,7 @@ class Student:
         self.scores= {}
         self.quiz_counter= 0
 
+    #counts each time a student takes a quiz to keep track of all scores
     def increment_quiz_number(self):
         self.quiz_counter+=1
         return self.quiz_counter
