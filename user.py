@@ -74,3 +74,44 @@ class Instructor:
 
 
     #notes, to identify we could use ID,and password if forgotten ask for name and a security question.
+    #So I added a class called system that basically handles logging in and logging out 
+    #as well as accessing data I have not ran this yet, just a warning - Sencere
+    class System:
+        def __init__(self):
+            # Mock user database with IDs and passwords 
+            # (I think we can store all of the users in a 
+            # csv or txt and then use that file to load the users dictionary)
+            self.users = {
+                'student1': Student(name="Bobby", userID="student1", password="password123", instructor="instructor1"),
+                'instructor1': Instructor(name="Dr.Smith", userID="instructor1", password="totallySecurePassword")
+            }
+            self.logged_in_user = None
+
+        def login(self, userID, password):
+            """
+            Logs in a user if credentials match those in the system.
+            """
+            user = self.users.get(userID)
+            if user and user.password == password:
+                self.logged_in_user = user
+                print(f"Login successful. Welcome, {user.name}!")
+                return True
+            print("Login failed. Check your credentials.")
+            return False
+
+        def logout(self):
+            """Logs out the current user."""
+            self.logged_in_user = None
+            print("Logged out successfully.")
+
+        def access_user_data(self):
+            """Provides access to the logged-in user's specific functionality."""
+            if isinstance(self.logged_in_user, Student): #checks if the current user is a student
+                print("Accessing student data...")
+                # will call methods that access specific data valuez
+            elif isinstance(self.logged_in_user, Instructor): #checks if the current user is an instructor
+                print("Accessing instructor data...")
+                # will call methods that access specific data values
+            else:
+                print("No user is logged in.")
+
