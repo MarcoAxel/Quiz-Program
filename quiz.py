@@ -168,3 +168,4 @@ class Quiz:
             user_input = int(input("Enter your option: "))
 
         print("Program terminated.")
+
