@@ -1,10 +1,6 @@
 import tkinter as tk
-import user 
 
-
-def login_screen():
-    #intitilzies the system for login
-    sys = user.System()
+def login_screen(sys):
 
     # Create the main window
     root = tk.Tk()
