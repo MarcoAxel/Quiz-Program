@@ -74,9 +74,7 @@ class Instructor:
 
 
     #notes, to identify we could use ID,and password if forgotten ask for name and a security question.
-    #So I added a class called system that basically handles logging in and logging out 
-    #as well as accessing data I have not ran this yet, just a warning - Sencere
-    
+    #TODO add forgot password and security question(Maybe add attributes securityQuestion and securityQuestionAns )
 class System:
     def __init__(self):
         # Mock user database with IDs and passwords 
@@ -109,7 +107,7 @@ class System:
         """Provides access to the logged-in user's specific functionality."""
         if isinstance(self.logged_in_user, Student): #checks if the current user is a student
             print("Accessing student data...")
-            # will call methods that access specific data valuez
+            # will call methods that access specific data values
         elif isinstance(self.logged_in_user, Instructor): #checks if the current user is an instructor
             print("Accessing instructor data...")
             # will call methods that access specific data values
