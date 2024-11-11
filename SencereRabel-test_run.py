@@ -1,14 +1,10 @@
 import user
-from gui import login_screen
+import question_bank as qb
+import gui
+sys = user.System()
+bank = qb.question_bank()
+gui.login_screen(sys,bank)
+bank.load_bank_from_file()
+bank.print_bank()
 
-# Initialize the System instance
-system = user.System()
 
-# Launch the login GUI
-login_screen(system)
-
-# After closing the GUI, check the logged-in user
-if system.logged_in_user:
-    print(f"Logged in as: {system.logged_in_user.userID}")
-else:
-    print("No user logged in.")

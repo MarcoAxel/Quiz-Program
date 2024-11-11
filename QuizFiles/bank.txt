@@ -1,0 +1,3 @@
+What color is clifford:Red,Blue,Green,purple,
+When is the sky black: at Night, during the day, afternoon,never,
+When color is the moon:whitish,blackish,red,orange,

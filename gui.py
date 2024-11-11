@@ -1,6 +1,6 @@
 import tkinter as tk
 
-def login_screen(sys):
+def login_screen(sys,bank):
 
     # Create the main window
     root = tk.Tk()
@@ -26,6 +26,7 @@ def login_screen(sys):
         password = password_entry.get()
         if sys.login(username, password) == True:
             pop_up_window(root, "400x300", "Welcome", "Login Successful!")
+            file_window(root, "400x300", "File Window",bank)
         else:
             pop_up_window(root, "400x300", "Oops", "Login Failed")
 
@@ -44,3 +45,22 @@ def pop_up_window(root, size, title, label_text):
     new_window.geometry(size)
     tk.Label(new_window, text=label_text).pack(pady=10)
     tk.Button(new_window, text="OK", command=new_window.destroy).pack()
+
+def file_window(root, size, title,bank):
+    from tkinter import filedialog
+    """
+    Opens a new window with specified size,title and text label.
+    """
+    new_window = tk.Toplevel(root)
+    new_window.title(title)
+    new_window.geometry(size)
+    def select_file():
+        bank.path = filedialog.askopenfilename()
+    
+    tk.Button(new_window, text="Select file", command=select_file()).pack()
+
+
+
+
+
+
