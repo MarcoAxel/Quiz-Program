@@ -56,8 +56,9 @@ def file_window(root, size, title,bank):
     new_window.geometry(size)
     def select_file():
         bank.path = filedialog.askopenfilename()
+        new_window.destroy()
     
-    tk.Button(new_window, text="Select file", command=select_file()).pack()
+    tk.Button(new_window, text="Select file", command=select_file).pack()
 
 
 
