@@ -29,13 +29,45 @@ class Student:
         pass
 
     def start_quiz(self,quiz_name):
-        """ 1)Looks for the specified "quiz_name.csv" file in the 'quizzes' directory,
-            2) if found it begins reading the question and prints them out one by one, along with the answer choices and waits for user answer choice input ('a','b','c', or 'd')
-            3) and then provides feedback, prints out current score and moves on to the next question until the quiz is over
-            4) provides test score and adds it to the scores dictionary
-        """
+        import csv
+        #1)Looks for the specified "quiz_name.csv" file in the 'quizzes' directory, and loads it into a dictonary
+        question_dict = {}
+        total_questions = 0
+        filepath = f"Quizfiles/{quiz_name}.csv"
+        with open(filepath, 'r') as file:
+            csv_reader = csv.reader(file)
+            for row in csv_reader:
+                # Each row in the CSV represents a question with answer options
+                question = row[0]
+                options = row[1:5]
+                question_dict.update({question:options})
+                total_questions +=1
         
-        pass
+        #2) if found it begins reading the question and prints them out one by one, along with the answer choices and waits for user answer choice input ('a','b','c', or 'd')
+        import random as r
+        running_score = 0
+        for q,ans in question_dict.items():
+            correct_ans = ans[0]
+            r.shuffle(ans)
+            print(q)
+            for i in range(len(ans)):
+                print(f"{i+1}) {ans[i]}")
+            user_ans = int(input("Enter your answer as a number:"))
+        #3) and then provides feedback, prints out current score and moves on to the next question until the quiz is over
+            if ans[user_ans-1] == correct_ans:
+                print("Correct!")
+                running_score += 1
+            else:
+                print("Incorrect")
+            print(f"Current Score:{running_score}/{total_questions}")
+            print("-"*40)
+        #4) provides test score and adds it to the scores dictionary
+        final_score =(running_score/total_questions)*100
+        print(f"Final Score:{final_score}")
+        self.scores.update({quiz_name:final_score})
+        
+
+        
    
 class Instructor:
     def __init__(self,name= None, userID=None, password=None):
@@ -81,7 +113,7 @@ class System:
         # (I think we can store all of the users in a 
         # csv or txt and then use that file to load the users dictionary)
         self.users = {
-            'student1': Student(name="Bobby", userID="student1", password="password123", instructor="instructor1"),
+            'student1': Student(name="Bobby", userID="student1", password="p1", instructor="instructor1"),
             'instructor1': Instructor(name="Dr.Smith", userID="instructor1", password="totallySecurePassword")
         }
         self.logged_in_user = None
