@@ -1,7 +1,6 @@
 import tkinter as tk
 
 def login_screen(sys):
-
     # Create the main window
     root = tk.Tk()
     root.title("Login")
@@ -25,7 +24,7 @@ def login_screen(sys):
         username = username_entry.get()
         password = password_entry.get()
         if sys.login(username, password) == True:
-            pop_up_window(root, "400x300", "Welcome", "Login Successful!")
+            confirmation_window(root)
         else:
             pop_up_window(root, "400x300", "Oops", "Login Failed")
 
@@ -34,6 +33,16 @@ def login_screen(sys):
 
     # Start the main event loop
     root.mainloop()
+
+def confirmation_window(root):
+    """
+    Opens a window to confirm that the login was a success.
+    """
+    new_window = tk.Toplevel(root)
+    new_window.title("Welcome")
+    new_window.geometry("400x300")
+    tk.Label(new_window, text="Login Successful!").pack(pady=10)
+    tk.Button(new_window, text="OK", command=root.destroy).pack()
 
 def pop_up_window(root, size, title, label_text):
     """
@@ -44,3 +53,18 @@ def pop_up_window(root, size, title, label_text):
     new_window.geometry(size)
     tk.Label(new_window, text=label_text).pack(pady=10)
     tk.Button(new_window, text="OK", command=new_window.destroy).pack()
+
+def quiz_window():
+   '''
+   Displays quiz information from the start_quiz function in user.py
+   '''
+   pass
+
+    
+   
+
+
+
+
+
+
