@@ -59,8 +59,9 @@ class Student:
                 running_score += 1
             else:
                 print("Incorrect")
-            print(f"Current Score:{running_score}/{total_questions}")
             print("-"*40)
+            print(f"Current Score:{running_score}/{total_questions}")
+            
         #4) provides test score and adds it to the scores dictionary
         final_score =(running_score/total_questions)*100
         print(f"Final Score:{final_score}")
