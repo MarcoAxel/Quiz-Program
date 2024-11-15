@@ -29,7 +29,31 @@ class Student:
         pass
 
     def start_quiz(self,quiz_name):
+        #import needed modules
         import csv
+        import tkinter as tk
+             # Create the main window
+        root = tk.Tk()
+        root.title(quiz_name)
+        root.geometry("600x500")  # Set the size of the window
+        user_var = tk.IntVar(value=0)
+        default_font = ("Arial", 12)
+        
+            # Create a label
+        question_label = tk.Label(root, text="question_text", font=("Arial", 15))
+        question_label.pack(pady=5)
+            #create radiobuttons for each value
+        Answer_1= tk.Radiobutton(root, text="Answer_1", variable=user_var, value=1)
+        Answer_1.pack()
+        Answer_2=  tk.Radiobutton(root, text="Answer_2", variable=user_var, value=2)
+        Answer_2.pack()
+        Answer_3=tk.Radiobutton(root, text="Answer_3", variable=user_var, value=3)
+        Answer_3.pack()
+        Answer_4=tk.Radiobutton(root, text="Answer_4", variable=user_var, value=4)
+        Answer_4.pack()
+            #create feedback label
+        feedback_label = tk.Label(root, text="", font=default_font)
+        feedback_label.pack(pady=5)
         #1)Looks for the specified "quiz_name.csv" file in the 'quizzes' directory, and loads it into a dictonary
         question_dict = {}
         total_questions = 0
@@ -47,13 +71,19 @@ class Student:
         import random as r
         running_score = 0
         for q,ans in question_dict.items():
+            feedback_label.config(text="")
             correct_ans = ans[0]
             r.shuffle(ans)
-            print(q)
-            for i in range(len(ans)):
-                print(f"{i+1}) {ans[i]}")
-            user_ans = int(input("Enter your answer as a number:"))
-        #3) and then provides feedback, prints out current score and moves on to the next question until the quiz is over
+            question_label.config(text=q)
+            Answer_1.config(text=ans[0])
+            Answer_2.config(text=ans[1])
+            Answer_3.config(text=ans[2])
+            Answer_4.config(text=ans[3])
+            
+            root.wait_variable(user_var)
+          
+            #3) and then provides feedback, prints out current score and moves on to the next question until the quiz is over
+            user_ans = user_var.get()
             if ans[user_ans-1] == correct_ans:
                 print("Correct!")
                 running_score += 1
@@ -61,6 +91,10 @@ class Student:
                 print("Incorrect")
             print("-"*40)
             print(f"Current Score:{running_score}/{total_questions}")
+            Answer_1.deselect()
+            Answer_2.deselect()
+            Answer_3.deselect()
+            Answer_4.deselect()
             
         #4) provides test score and adds it to the scores dictionary
         final_score =(running_score/total_questions)*100
