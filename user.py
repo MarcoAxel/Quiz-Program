@@ -17,10 +17,13 @@ class Student:
         self.quiz_counter= 0
         return 0
         
-    def add_score(self,quiz_name ,score, date):
+    def add_score(self,quiz_name ,score):
+        import datetime
+        # Get the current date
+        date = datetime.date.today()
         """concats the name of the quiz taken and the quiz attempt number to associate the given score to it"""
         self.increment_quiz_number()
-        instance= quiz_name + self.quiz_counter
+        instance= quiz_name + str (self.quiz_counter)
         self.scores[instance]= [self.quiz_counter,score,date] #adds a key("quiz name + quiz counter"): value(a list [quiz number, quiz score, date quiz was taken]) pair to a dictionary which keeps track of quiz scores
         return self.scores
 
@@ -32,28 +35,6 @@ class Student:
         #import needed modules
         import csv
         import tkinter as tk
-             # Create the main window
-        root = tk.Tk()
-        root.title(quiz_name)
-        root.geometry("600x500")  # Set the size of the window
-        user_var = tk.IntVar(value=0)
-        default_font = ("Arial", 12)
-        
-            # Create a label
-        question_label = tk.Label(root, text="question_text", font=("Arial", 15))
-        question_label.pack(pady=5)
-            #create radiobuttons for each value
-        Answer_1= tk.Radiobutton(root, text="Answer_1", variable=user_var, value=1)
-        Answer_1.pack()
-        Answer_2=  tk.Radiobutton(root, text="Answer_2", variable=user_var, value=2)
-        Answer_2.pack()
-        Answer_3=tk.Radiobutton(root, text="Answer_3", variable=user_var, value=3)
-        Answer_3.pack()
-        Answer_4=tk.Radiobutton(root, text="Answer_4", variable=user_var, value=4)
-        Answer_4.pack()
-            #create feedback label
-        feedback_label = tk.Label(root, text="", font=default_font)
-        feedback_label.pack(pady=5)
         #1)Looks for the specified "quiz_name.csv" file in the 'quizzes' directory, and loads it into a dictonary
         question_dict = {}
         total_questions = 0
@@ -69,39 +50,88 @@ class Student:
         
         #2) if found it begins reading the question and prints them out one by one, along with the answer choices and waits for user answer choice input ('a','b','c', or 'd')
         import random as r
-        running_score = 0
-        for q,ans in question_dict.items():
-            feedback_label.config(text="")
-            correct_ans = ans[0]
-            r.shuffle(ans)
-            question_label.config(text=q)
-            Answer_1.config(text=ans[0])
-            Answer_2.config(text=ans[1])
-            Answer_3.config(text=ans[2])
-            Answer_4.config(text=ans[3])
-            
-            root.wait_variable(user_var)
-          
-            #3) and then provides feedback, prints out current score and moves on to the next question until the quiz is over
+        running_score = 0 
+        index = 0
+        q_list = list(question_dict.keys())
+        ans_list = list(question_dict.values())
+        q = q_list[index]
+        ans = ans_list[index]
+        correct_index = 0
+        def next_question():
+            nonlocal index, q, ans, correct_index
+            if index < total_questions:
+                q = q_list[index]
+                ans = ans_list[index]
+                correct_answer = ans[0]
+                r.shuffle(ans)
+                correct_index = ans.index(correct_answer)  # Track shuffled correct answer
+                feedback_label.config(text="")
+                question_label.config(text=q)
+                Answer_1.config(text=ans[0])
+                Answer_2.config(text=ans[1])
+                Answer_3.config(text=ans[2])
+                Answer_4.config(text=ans[3])
+                score_label.config(text=f"Current Score: {running_score}/{total_questions}")
+            else:
+                end_quiz()
+
+        def check_answer():
+            nonlocal running_score
             user_ans = user_var.get()
-            if ans[user_ans-1] == correct_ans:
-                print("Correct!")
+            if user_ans - 1 == correct_index:
+                feedback_label.config(text="Correct!", fg="green")
                 running_score += 1
             else:
-                print("Incorrect")
-            print("-"*40)
-            print(f"Current Score:{running_score}/{total_questions}")
-            Answer_1.deselect()
-            Answer_2.deselect()
-            Answer_3.deselect()
-            Answer_4.deselect()
-            
-        #4) provides test score and adds it to the scores dictionary
-        final_score =(running_score/total_questions)*100
-        print(f"Final Score:{final_score}")
-        self.scores.update({quiz_name:final_score})
-        
+                feedback_label.config(text="Incorrect", fg="red")
 
+        def click():
+            nonlocal index
+            check_answer()
+            index += 1
+            next_question()
+
+        def end_quiz():
+            final_score = (running_score / total_questions) * 100
+            feedback_label.config(
+                text=f"Quiz Complete! Final Score: {final_score:.2f}%", fg="blue"
+            )
+            question_label.config(text="")
+            Answer_1.pack_forget()
+            Answer_2.pack_forget()
+            Answer_3.pack_forget()
+            Answer_4.pack_forget()
+            self.add_score(quiz_name,final_score)
+               # Create the main window
+        root = tk.Tk()
+        root.title(quiz_name)
+        root.geometry("600x500")  # Set the size of the window
+        user_var = tk.IntVar(value=0)
+        default_font = ("Arial", 12)
+            #create label for score tracking
+        score_label = tk.Label(root, text="Score", font=("Arial", 15))
+        score_label.pack(pady=5)
+            # Create a label for question
+        question_label = tk.Label(root, text="question_text", font=("Arial", 15),)
+        question_label.pack(pady=5)
+           
+            #create radiobuttons for each value
+        Answer_1= tk.Radiobutton(root, text="Answer_1", variable=user_var, value=1)
+        Answer_1.pack()
+        Answer_2=  tk.Radiobutton(root, text="Answer_2", variable=user_var, value=2)
+        Answer_2.pack()
+        Answer_3=tk.Radiobutton(root, text="Answer_3", variable=user_var, value=3)
+        Answer_3.pack()
+        Answer_4=tk.Radiobutton(root, text="Answer_4", variable=user_var, value=4)
+        Answer_4.pack()
+            #create feedback label
+        feedback_label = tk.Label(root, text="", font=default_font)
+        feedback_label.pack(pady=5)
+            #Create button
+        tk.Button(root, text="Submit", command=click).pack()
+            #Create function for user feedback
+        next_question()
+        tk.mainloop()
+        
         
    
 class Instructor:
