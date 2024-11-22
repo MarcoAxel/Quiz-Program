@@ -23,7 +23,7 @@ class Student:
         date = datetime.date.today()
         """concats the name of the quiz taken and the quiz attempt number to associate the given score to it"""
         self.increment_quiz_number()
-        instance= quiz_name + str (self.quiz_counter)
+        instance= quiz_name + str (f'({self.quiz_counter})')
         self.scores[instance]= [self.quiz_counter,score,date] #adds a key("quiz name + quiz counter"): value(a list [quiz number, quiz score, date quiz was taken]) pair to a dictionary which keeps track of quiz scores
         return self.scores
 
@@ -95,6 +95,8 @@ class Student:
             feedback_label.config(
                 text=f"Quiz Complete! Final Score: {final_score:.2f}%", fg="blue"
             )
+            submitButton.config(text="Close Quiz")
+            submitButton.config(command=(root.destroy))
             question_label.config(text="")
             Answer_1.pack_forget()
             Answer_2.pack_forget()
@@ -127,7 +129,8 @@ class Student:
         feedback_label = tk.Label(root, text="", font=default_font)
         feedback_label.pack(pady=5)
             #Create button
-        tk.Button(root, text="Submit", command=click).pack()
+        submitButton =tk.Button(root, text="Submit", command=click)
+        submitButton.pack()
             #Create function for user feedback
         next_question()
         tk.mainloop()
