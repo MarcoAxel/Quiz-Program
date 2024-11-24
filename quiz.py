@@ -3,7 +3,7 @@ import csv
 import random
 
 class Quiz:
-    quiz_list={}
+    quiz_list={} #append all these new created quizzes into its respective => professor's quiz folder => in the quizes_list.txt file (this will allow us to update the quizzes list menu
     #creates a .csv file every time a quiz is created with its respective name, within  the <quizzes> folder in this python file's current file path
     #2 mandatory arguments:
         #quiz name:str= "New Quiz"
