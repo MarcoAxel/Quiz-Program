@@ -3,8 +3,9 @@ import csv
 import random
 
 class Quiz:
-    quiz_list={}
-    #creates a .csv file every time a quiz is created with its respective name, within  the <quizzes> folder in this python file's current file path
+    quiz_list={} #We can use this dictionary to add the new created quizzes to the quizzes list
+
+    #creates a .csv file every time a quiz is created with its respective name, within  the <quizzes> folder in this python program file's current file path
     #2 mandatory arguments:
         #quiz name:str= "New Quiz"
         #name of instructor creating the quiz":str=None
