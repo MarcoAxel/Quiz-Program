@@ -54,12 +54,16 @@ def pop_up_window(root, size, title, label_text):
     tk.Label(new_window, text=label_text).pack(pady=10)
     tk.Button(new_window, text="OK", command=new_window.destroy).pack()
 
-def quiz_window():
-   '''
-   Displays quiz information from the start_quiz function in user.py
-   '''
-   pass
+def error_window():
+    root = tk.Tk()
+    root.title("Error")
+    root.geometry("200x100")  # Set the size of the window
 
+    # Create a label and entry for the username
+    textLabel = tk.Label(root, text="An error has occured", font=("Arial", 15))
+    textLabel.pack()
+    tk.Button(root, text="Exit", command=root.destroy).pack()
+    root.mainloop()
     
    
 

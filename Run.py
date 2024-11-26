@@ -11,7 +11,3 @@ try:
         print("Instuctor")
 except:
     gui.error_window()
-
-
-
-
