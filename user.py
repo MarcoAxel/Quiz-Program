@@ -65,30 +65,30 @@ class Student:
                 correct_answer = ans[0]
                 r.shuffle(ans)
                 correct_index = ans.index(correct_answer)  # Track shuffled correct answer
-                feedback_label.config(text="")
                 question_label.config(text=q)
                 Answer_1.config(text=ans[0])
                 Answer_2.config(text=ans[1])
                 Answer_3.config(text=ans[2])
                 Answer_4.config(text=ans[3])
                 score_label.config(text=f"Current Score: {running_score}/{total_questions}")
+                feedback_label.config(text="")
             else:
                 end_quiz()
 
         def check_answer():
+            import time
             nonlocal running_score
             user_ans = user_var.get()
             if user_ans - 1 == correct_index:
-                feedback_label.config(text="Correct!", fg="green")
+                feedback_label.config(text="Correct!",fg="green")
                 running_score += 1
             else:
-                feedback_label.config(text="Incorrect", fg="red")
-
+                feedback_label.config(text="Incorrect",fg="red")
+            root.after(500, next_question)
         def click():
             nonlocal index
             check_answer()
             index += 1
-            next_question()
 
         def end_quiz():
             final_score = (running_score / total_questions) * 100
