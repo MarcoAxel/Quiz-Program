@@ -70,7 +70,7 @@ def question_window():
     from tkinter import messagebox
     bank = question_bank.QuestionBank("Test")
     bank.load_bank_from_csv()
-    
+
     def add_question():
         """
         Opens a dialog to add a new question and its answers to the question bank.
@@ -133,11 +133,38 @@ def question_window():
         """
         Displays the contents of the CSV file in a Tkinter window.
         """
-        
+        def refresh_text_area():
+            """
+            Refreshes the Text widget with the current state of the CSV data.
+            """
+            text_area.configure(state="normal")  # Allow editing temporarily
+            text_area.delete("1.0", tk.END)  # Clear existing content
+            counter = 0
+            for question, answers in bank.dict.items():
+                counter += 1
+                ans_text = ", ".join(answers)
+                text_area.insert(tk.END, f"{counter}) {question}: {ans_text}\n")
+            text_area.configure(state="disabled")  # Make it read-only again
+        def remove_question():
+            """
+            Deletes question based on the given index
+            """
+            index = int(index_entry.get())
+            counter = 0
+            for question, answers in bank.dict.items():
+                counter +=1
+                if counter == index:
+                    if bank.delete_question(question):
+                        messagebox.showinfo("Success", f"Deleted question: {question}")
+                        refresh_text_area()
+                    else:
+                        messagebox.showerror("Error", "Question not found in the bank.")
+                    break
+
         # Create a new window
         display_window = tk.Toplevel(root)
         display_window.title("CSV Contents")
-
+        
         # Add a Text widget with a scrollbar
         text_area = tk.Text(display_window, wrap="none", height=20, width=80)
         scrollbar = tk.Scrollbar(display_window, orient=tk.VERTICAL, command=text_area.yview)
@@ -148,34 +175,25 @@ def question_window():
         scrollbar.grid(row=0, column=1, sticky="ns")
 
         # Populate the Text widget with CSV contents
-        counter = 0
-        for question, answers in bank.dict.items():
-            counter +=1
-            ans_text =""
-            for i in answers:
-                ans_text += f"{i},"
-            text_area.insert(tk.END,f'{counter}){question}:{ans_text}'+"\n")
+        refresh_text_area()
 
-        text_area.configure(state="disabled")  # Make the Text widget read-only
+        # Labels and entry fields
+        tk.Label(display_window, text="Enter index of question you wish to remove:").grid(row=1, column=0, columnspan=2, pady=10)
+        index_entry = tk.Entry(display_window, width=50)
+        index_entry.grid(row=2, column=0, columnspan=2, pady=10)
+
+        # 
+        confirm_button = tk.Button(display_window, text="Confirm deletion", command=remove_question)
+        confirm_button.grid(row=2, column=1, columnspan=2, pady=10)
+
+        # Add an "Exit" button at the bottom
+        exit_button = tk.Button(display_window, text="Exit", command=display_window.destroy)
+        exit_button.grid(row=3, column=0, columnspan=2, pady=10)
 
         # Configure resizing
         display_window.grid_rowconfigure(0, weight=1)
         display_window.grid_columnconfigure(0, weight=1)
 
-    def remove_question(index):
-        """
-        Deletes question based on the given index
-        """
-        def delete():
-            counter = 0
-            for question, answers in bank.dict.items():
-                counter +=1
-                if counter == index:
-                    if bank.delete_question(question):
-                        messagebox.showinfo("Success", f"Deleted question: {question}")
-                    else:
-                        messagebox.showerror("Error", "Question not found in the bank.")
-                    return
        
     root = tk.Tk()
     root.title("Question Bank Manager")
@@ -183,11 +201,8 @@ def question_window():
 
     btn_add = tk.Button(root, text="Add Question", command=add_question)
     btn_add.pack(side=tk.LEFT, padx=10, pady=10)
-
-    btn_remove = tk.Button(root, text="Remove Question", command=remove_question)
-    btn_remove.pack(side=tk.LEFT, padx=10, pady=10)
-
-    btn_load = tk.Button(root, text="view Questions", command=display_csv_contents)
+    
+    btn_load = tk.Button(root, text="View or Delete Questions", command=display_csv_contents)
     btn_load.pack(side=tk.LEFT, padx=10, pady=10)
 
     root.mainloop()
