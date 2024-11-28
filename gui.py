@@ -149,7 +149,11 @@ def question_window():
             """
             Deletes question based on the given index
             """
-            index = int(index_entry.get())
+            input = index_entry.get()
+            if isinstance(input,int):
+                index = input
+            else:
+                return
             counter = 0
             for question, answers in bank.dict.items():
                 counter +=1
