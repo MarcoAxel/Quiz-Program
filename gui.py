@@ -65,11 +65,8 @@ def error_window():
     tk.Button(root, text="Exit", command=root.destroy).pack()
     root.mainloop()
 
-def question_window():
-    import question_bank
+def question_window(bank):
     from tkinter import messagebox
-    bank = question_bank.QuestionBank("Test")
-    bank.load_bank_from_csv()
 
     def add_question():
         """
@@ -133,6 +130,7 @@ def question_window():
         """
         Displays the contents of the CSV file in a Tkinter window.
         """
+        bank.load_bank_from_csv()
         def refresh_text_area():
             """
             Refreshes the Text widget with the current state of the CSV data.
@@ -149,10 +147,9 @@ def question_window():
             """
             Deletes question based on the given index
             """
-            input = index_entry.get()
-            if isinstance(input,int):
-                index = input
-            else:
+            try:
+                index = int(index_entry.get())
+            except:
                 return
             counter = 0
             for question, answers in bank.dict.items():

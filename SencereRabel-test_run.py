@@ -1,3 +1,6 @@
+import user
+import gui
 import question_bank as qb
-from gui import question_window
-question_window()
+
+bank = qb.QuestionBank("quiz1")
+gui.question_window(bank)

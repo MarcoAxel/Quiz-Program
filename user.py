@@ -182,7 +182,7 @@ class System:
         # csv or txt and then use that file to load the users dictionary)
         self.users = {
             'student1': Student(name="Bobby", userID="student1", password="p1", instructor="instructor1"),
-            'instructor1': Instructor(name="Dr.Smith", userID="instructor1", password="totallySecurePassword")
+            'instructor1': Instructor(name="Dr.Smith", userID="instructor1", password="p2")
         }
         self.logged_in_user = None
 

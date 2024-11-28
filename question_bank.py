@@ -41,6 +41,7 @@ class QuestionBank:
                 writer.writerow([question] + answers)
 
     def add_question(self, question, answers):
+        self.load_bank_from_csv()
         self.dict[question] = answers
         self.write_bank_to_csv()
 
