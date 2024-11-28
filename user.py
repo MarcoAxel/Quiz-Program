@@ -84,7 +84,7 @@ class Student:
                 running_score += 1
             else:
                 feedback_label.config(text="Incorrect",fg="red")
-            root.after(500, next_question)
+            root.after(200, next_question)
         def click():
             nonlocal index
             check_answer()

@@ -54,13 +54,13 @@ def pop_up_window(root, size, title, label_text):
     tk.Label(new_window, text=label_text).pack(pady=10)
     tk.Button(new_window, text="OK", command=new_window.destroy).pack()
 
-def error_window():
+def error_window(label_text):
     root = tk.Tk()
     root.title("Error")
     root.geometry("200x100")  # Set the size of the window
 
     # Create a label and entry for the username
-    textLabel = tk.Label(root, text="An error has occured", font=("Arial", 15))
+    textLabel = tk.Label(root, text=label_text, font=("Arial", 15))
     textLabel.pack()
     tk.Button(root, text="Exit", command=root.destroy).pack()
     root.mainloop()
@@ -208,4 +208,33 @@ def question_window(bank):
 
     root.mainloop()
 
-    
+def quiz_select_window():
+    """
+    Create a Tkinter window to prompt the user for a string.
+    Returns the string entered by the user.
+    """
+    user_input = None  # Variable to store the user's input
+
+    def on_submit():
+        nonlocal user_input
+        user_input = input_entry.get()  # Retrieve the text from the entry widget
+        root.destroy()  # Close the window
+
+    # Create the main Tkinter window
+    root = tk.Tk()
+    root.title("File Select")
+    root.geometry("300x150")
+
+    # Create and place a label and an entry field
+    tk.Label(root, text="Enter the name of a quiz:", font=("Arial", 12)).pack(pady=10)
+    input_entry = tk.Entry(root, font=("Arial", 12))
+    input_entry.pack(pady=5)
+
+    # Create and place a submit button
+    submit_button = tk.Button(root, text="Submit", command=on_submit)
+    submit_button.pack(pady=10)
+
+    # Run the Tkinter event loop
+    root.mainloop()
+
+    return user_input
