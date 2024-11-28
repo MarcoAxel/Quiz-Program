@@ -64,11 +64,132 @@ def error_window():
     textLabel.pack()
     tk.Button(root, text="Exit", command=root.destroy).pack()
     root.mainloop()
+
+def question_window():
+    import question_bank
+    from tkinter import messagebox
+    bank = question_bank.QuestionBank("Test")
+    bank.load_bank_from_csv()
     
-   
+    def add_question():
+        """
+        Opens a dialog to add a new question and its answers to the question bank.
+        """
+        def save_question():
+            question = question_entry.get()
+            answers = [correct_entry.get(),wrong1_entry.get(),wrong2_entry.get(),wrong3_entry.get()]
+            if not question or any(not ans for ans in answers):
+                messagebox.showerror("Input Error", "All fields must be filled!")
+                return
+            bank.add_question(question,answers)
+            clear_entries()
+        def finish():
+            root.destroy()
+        def clear_entries():
+            """Clear all input fields."""
+            question_entry.delete(0, tk.END)
+            correct_entry.delete(0, tk.END)
+            wrong1_entry.delete(0, tk.END)
+            wrong2_entry.delete(0, tk.END)
+            wrong3_entry.delete(0, tk.END)
 
 
+            
+        # Create the GUI
+        root = tk.Tk()
+        root.title("Add Questions to quiz")
 
+        # Labels and entry fields
+        tk.Label(root, text="Question:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
+        question_entry = tk.Entry(root, width=50)
+        question_entry.grid(row=0, column=1, padx=10, pady=5)
 
+        tk.Label(root, text="Correct Answer:").grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        correct_entry = tk.Entry(root, width=50)
+        correct_entry.grid(row=1, column=1, padx=10, pady=5)
 
+        tk.Label(root, text="Wrong Answer 1:").grid(row=2, column=0, padx=10, pady=5, sticky="w")
+        wrong1_entry = tk.Entry(root, width=50)
+        wrong1_entry.grid(row=2, column=1, padx=10, pady=5)
 
+        tk.Label(root, text="Wrong Answer 2:").grid(row=3, column=0, padx=10, pady=5, sticky="w")
+        wrong2_entry = tk.Entry(root, width=50)
+        wrong2_entry.grid(row=3, column=1, padx=10, pady=5)
+
+        tk.Label(root, text="Wrong Answer 3:").grid(row=4, column=0, padx=10, pady=5, sticky="w")
+        wrong3_entry = tk.Entry(root, width=50)
+        wrong3_entry.grid(row=4, column=1, padx=10, pady=5)
+
+        # Buttons
+        save_button = tk.Button(root, text="Save Question", command=save_question)
+        save_button.grid(row=5, column=0, padx=10, pady=10, sticky="e")
+
+        finish_button = tk.Button(root, text="Finish", command=finish)
+        finish_button.grid(row=5, column=1, padx=10, pady=10, sticky="w")
+
+        root.mainloop()
+
+    def display_csv_contents():
+        """
+        Displays the contents of the CSV file in a Tkinter window.
+        """
+        
+        # Create a new window
+        display_window = tk.Toplevel(root)
+        display_window.title("CSV Contents")
+
+        # Add a Text widget with a scrollbar
+        text_area = tk.Text(display_window, wrap="none", height=20, width=80)
+        scrollbar = tk.Scrollbar(display_window, orient=tk.VERTICAL, command=text_area.yview)
+        text_area.configure(yscrollcommand=scrollbar.set)
+
+        # Pack the widgets
+        text_area.grid(row=0, column=0, sticky="nsew")
+        scrollbar.grid(row=0, column=1, sticky="ns")
+
+        # Populate the Text widget with CSV contents
+        counter = 0
+        for question, answers in bank.dict.items():
+            counter +=1
+            ans_text =""
+            for i in answers:
+                ans_text += f"{i},"
+            text_area.insert(tk.END,f'{counter}){question}:{ans_text}'+"\n")
+
+        text_area.configure(state="disabled")  # Make the Text widget read-only
+
+        # Configure resizing
+        display_window.grid_rowconfigure(0, weight=1)
+        display_window.grid_columnconfigure(0, weight=1)
+
+    def remove_question(index):
+        """
+        Deletes question based on the given index
+        """
+        def delete():
+            counter = 0
+            for question, answers in bank.dict.items():
+                counter +=1
+                if counter == index:
+                    if bank.delete_question(question):
+                        messagebox.showinfo("Success", f"Deleted question: {question}")
+                    else:
+                        messagebox.showerror("Error", "Question not found in the bank.")
+                    return
+       
+    root = tk.Tk()
+    root.title("Question Bank Manager")
+    root.geometry("600x100")
+
+    btn_add = tk.Button(root, text="Add Question", command=add_question)
+    btn_add.pack(side=tk.LEFT, padx=10, pady=10)
+
+    btn_remove = tk.Button(root, text="Remove Question", command=remove_question)
+    btn_remove.pack(side=tk.LEFT, padx=10, pady=10)
+
+    btn_load = tk.Button(root, text="view Questions", command=display_csv_contents)
+    btn_load.pack(side=tk.LEFT, padx=10, pady=10)
+
+    root.mainloop()
+
+    
