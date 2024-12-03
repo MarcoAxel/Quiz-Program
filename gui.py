@@ -1,4 +1,7 @@
+
+import os
 import tkinter as tk
+from tkinter import messagebox
 
 def login_screen(sys):
     # Create the main window
@@ -65,6 +68,7 @@ def error_window(label_text):
     tk.Button(root, text="Exit", command=root.destroy).pack()
     root.mainloop()
 
+""""""
 def question_window(bank):
     from tkinter import messagebox
 
@@ -208,10 +212,11 @@ def question_window(bank):
 
     root.mainloop()
 
+
 def quiz_select_window():
     """
-    Create a Tkinter window to prompt the user for a string.
-    Returns the string entered by the user.
+    Create a Tkinter window to prompt the user to choose between typing the name of the quiz or listing out the quizzes.
+    Returns the string entered by the user or selected from the list.
     """
     user_input = None  # Variable to store the user's input
 
@@ -220,21 +225,63 @@ def quiz_select_window():
         user_input = input_entry.get()  # Retrieve the text from the entry widget
         root.destroy()  # Close the window
 
+    def on_list_quizzes():
+        root.destroy()  # Close the current window
+        list_quizzes_window()  # Open the list quizzes window
+
+    def list_quizzes_window():
+        nonlocal user_input
+        list_root = tk.Tk()
+        list_root.title("Select Quiz")
+        list_root.geometry("300x200")
+
+        tk.Label(list_root, text="Select a quiz:", font=("Arial", 12)).pack(pady=10)
+
+        quiz_files = [f for f in os.listdir('QuizFiles') if f.endswith('.csv')]
+        if not quiz_files:
+            messagebox.showinfo("No Quizzes", "No quizzes found in the QuizFiles directory.")
+            list_root.destroy()
+            return
+
+        quiz_var = tk.StringVar(value=quiz_files[0])
+
+        for quiz in quiz_files:
+            tk.Radiobutton(list_root, text=quiz, variable=quiz_var, value=quiz).pack(anchor="w")
+
+        def on_select():
+            nonlocal user_input
+            user_input = quiz_var.get().replace('.csv', '')  # Remove the file extension
+            list_root.destroy()
+
+        tk.Button(list_root, text="Select", command=on_select).pack(pady=10)
+
+        list_root.mainloop()
+
     # Create the main Tkinter window
     root = tk.Tk()
     root.title("File Select")
-    root.geometry("300x150")
+    root.geometry("300x200")
 
-    # Create and place a label and an entry field
-    tk.Label(root, text="Enter the name of a quiz:", font=("Arial", 12)).pack(pady=10)
+    # Create and place a label and radio buttons
+    tk.Label(root, text="Choose an option:", font=("Arial", 12)).pack(pady=10)
+    option_var = tk.StringVar(value="type")
+
+    tk.Radiobutton(root, text="Type Quiz Name", variable=option_var, value="type").pack(anchor="w")
+    tk.Radiobutton(root, text="List Quizzes", variable=option_var, value="list").pack(anchor="w")
+
+    # Create and place an entry field
     input_entry = tk.Entry(root, font=("Arial", 12))
     input_entry.pack(pady=5)
 
     # Create and place a submit button
-    submit_button = tk.Button(root, text="Submit", command=on_submit)
-    submit_button.pack(pady=10)
+    def on_option_submit():
+        if option_var.get() == "type":
+            on_submit()
+        else:
+            on_list_quizzes()
+
+    tk.Button(root, text="Submit", command=on_option_submit).pack(pady=10)
 
     # Run the Tkinter event loop
     root.mainloop()
-
     return user_input

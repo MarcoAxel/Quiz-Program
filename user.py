@@ -70,7 +70,7 @@ class Student:
                 Answer_2.config(text=ans[1])
                 Answer_3.config(text=ans[2])
                 Answer_4.config(text=ans[3])
-                score_label.config(text=f"Current Score: {running_score}/{total_questions}")
+                score_label.config(text=f"Current Score : {running_score}/{total_questions}")
                 feedback_label.config(text="")
             else:
                 end_quiz()

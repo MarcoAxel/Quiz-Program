@@ -3,9 +3,9 @@ import gui
 import question_bank as qb
 try:
     sys = user.System()
-    quiz_name = "quiz1"
-    #quiz_name = gui.quiz_select_window()
+    #quiz_name = "quiz1"
     gui.login_screen(sys)
+    quiz_name = gui.quiz_select_window()
     bank = qb.QuestionBank(quiz_name)
     curr = sys.logged_in_user
     if isinstance(curr,user.Student):
