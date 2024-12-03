@@ -1,4 +1,4 @@
-from quiz import Quiz     
+ 
 class Student:
     def __init__(self,name= None, userID= None, password= None, instructor= None):
         self.name= name
