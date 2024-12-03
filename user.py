@@ -173,8 +173,6 @@ class Instructor:
         pass
 
 
-    #notes, to identify we could use ID,and password if forgotten ask for name and a security question.
-    #TODO add forgot password and security question(Maybe add attributes securityQuestion and securityQuestionAns )
 class System:
     def __init__(self):
         # Mock user database with IDs and passwords 

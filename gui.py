@@ -1,6 +1,9 @@
 import tkinter as tk
 
 def login_screen(sys):
+    '''
+    Creates a window for the user to log into their account with
+    '''
     # Create the main window
     root = tk.Tk()
     root.title("Login")
@@ -55,6 +58,9 @@ def pop_up_window(root, size, title, label_text):
     tk.Button(new_window, text="OK", command=new_window.destroy).pack()
 
 def error_window(label_text):
+    '''
+    Creates a window to print an error message
+    '''
     root = tk.Tk()
     root.title("Error")
     root.geometry("200x100")  # Set the size of the window
@@ -66,6 +72,9 @@ def error_window(label_text):
     root.mainloop()
 
 def question_window(bank):
+    '''
+    Creates a window to have the user edit questions in a quiz
+    '''
     from tkinter import messagebox
 
     def add_question():
@@ -212,8 +221,7 @@ def question_window(bank):
 
 def quiz_select_window():
     """
-    Create a Tkinter window to prompt the user for a string.
-    Returns the string entered by the user.
+    Create a window to select a quiz
     """
     user_input = None  # Variable to store the user's input
 
@@ -242,6 +250,9 @@ def quiz_select_window():
     return user_input
 
 def run_program():
+    '''
+    Runs the program shooting an error if something goes wrong
+    '''
     import user
     import question_bank as qb
     try:
