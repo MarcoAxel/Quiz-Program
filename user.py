@@ -50,21 +50,35 @@ class Student:
         
         #2) if found it begins reading the question and prints them out one by one, along with the answer choices and waits for user answer choice input ('a','b','c', or 'd')
         import random as r
-        running_score = 0 
-        index = 0
         q_list = list(question_dict.keys())
         ans_list = list(question_dict.values())
-        q = q_list[index]
-        ans = ans_list[index]
+
+        # Create a list of indices for shuffling
+        indices = list(range(len(q_list)))
+        r.shuffle(indices)
+
+        # Create shuffled question and answer lists
+        shuffled_questions = [q_list[i] for i in indices]
+        shuffled_answers = [ans_list[i] for i in indices]
+
+        # Step 3: Initialize variables for the quiz
+        total_questions = len(shuffled_questions)
+        running_score = 0
+        current_index = 0
         correct_index = 0
         def next_question():
-            nonlocal index, q, ans, correct_index
-            if index < total_questions:
-                q = q_list[index]
-                ans = ans_list[index]
+            nonlocal current_index, correct_index
+            if current_index < total_questions:
+                # Get the next question and its answers
+                q = shuffled_questions[current_index]
+                ans = shuffled_answers[current_index]
+
+                # Shuffle the answers and identify the correct one
                 correct_answer = ans[0]
                 r.shuffle(ans)
-                correct_index = ans.index(correct_answer)  # Track shuffled correct answer
+                correct_index = ans.index(correct_answer)
+
+                # Update the UI with the question and answers
                 question_label.config(text=q)
                 Answer_1.config(text=ans[0])
                 Answer_2.config(text=ans[1])
@@ -86,9 +100,9 @@ class Student:
                 feedback_label.config(text="Incorrect",fg="red")
             root.after(200, next_question)
         def click():
-            nonlocal index
+            nonlocal current_index
             check_answer()
-            index += 1
+            current_index += 1
 
         def end_quiz():
             final_score = (running_score / total_questions) * 100
