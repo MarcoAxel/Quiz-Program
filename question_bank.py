@@ -3,7 +3,7 @@ from tkinter import messagebox
 class QuestionBank:
     """
     A class to manage a bank of questions and answers using CSV files, supporting operations to load, write,
-    add, and print question sets.
+    add, and delete question sets.
 
     """
 
