@@ -195,7 +195,6 @@ def question_window(bank):
         display_window.grid_rowconfigure(0, weight=1)
         display_window.grid_columnconfigure(0, weight=1)
 
-       
     root = tk.Tk()
     root.title("Question Bank Manager")
     root.geometry("600x100")
@@ -205,6 +204,9 @@ def question_window(bank):
     
     btn_load = tk.Button(root, text="View or Delete Questions", command=display_csv_contents)
     btn_load.pack(side=tk.LEFT, padx=10, pady=10)
+
+    btn_close = tk.Button(root, text="Close Program", command=root.destroy)
+    btn_close.pack(side=tk.LEFT, padx=10, pady=10)
 
     root.mainloop()
 
@@ -238,3 +240,25 @@ def quiz_select_window():
     root.mainloop()
 
     return user_input
+
+def run_program():
+    import user
+    import question_bank as qb
+    try:
+        sys = user.System()
+        quiz_name = "quiz1"
+        #quiz_name = gui.quiz_select_window()
+        login_screen(sys)
+        bank = qb.QuestionBank(quiz_name)
+        curr = sys.logged_in_user
+        if isinstance(curr,user.Student):
+            try:
+                curr.start_quiz(quiz_name)
+            except:
+                error_window("Invalid quiz_name")
+        elif isinstance(curr, user.Instructor):
+            question_window(bank)
+    except:
+        error_window("An error has occured")
+
+
