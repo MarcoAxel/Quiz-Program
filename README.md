@@ -2,6 +2,12 @@
 
 A simple quiz application with user authentication, supporting both students and instructors. The program uses a graphical user interface (GUI) built with Tkinter for login and error handling. Students can take quizzes and view their scores, while instructors can create quizzes.
 
+## Focus
+- **Python**
+- **Object Oriented Programming (OOP)**
+- **Tinker (GUI)**
+- **csv file handlig with I/O**
+
 ## Features
 
 - **User Authentication:** Login system for students and instructors.
@@ -20,13 +26,22 @@ A simple quiz application with user authentication, supporting both students and
 
 ## How It Works
 
-1. **Start the Program:** Run `Run.py` or `SencereRabel-test_run.py`.
+1. **Start the Program:** Run `Run.py`.
+![start](demo_images/login.png)
 2. **Login:** Enter your username and password in the GUI window.
 3. **Role-Based Actions:**
     - **Student:** Take a quiz and view your score.
     - **Instructor:** Create and manage quizzes.
+![studnet login](demo_images/studentlogin.png)
+![successful login](demo_images/success.png)
 4. **Error Handling:** If an error occurs, an error window will be displayed.
-
+![failed login](demo_images/failed.png)
+5. **Responce Submission:** Select you answer and click submit.
+![questions](demo_images/question.png)
+6. **Receive live feedback:** Current score is shown at the top.
+![current](demo_images/current.png)
+7. **Final Score:** Displayed at the end.
+![start](demo_images/finalscore.png)
 ## Requirements
 
 - Python 3.x
